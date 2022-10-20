@@ -6,6 +6,7 @@ import io.github.narutopig.neon.lib.token.TokenType;
 import io.github.narutopig.neon.lib.util.Chars;
 import io.github.narutopig.neon.lib.util.Identifiers;
 import io.github.narutopig.neon.lib.value.BooleanValue;
+import io.github.narutopig.neon.lib.value.IdentifierValue;
 import io.github.narutopig.neon.lib.value.NumberValue;
 import io.github.narutopig.neon.lib.value.StringValue;
 
@@ -17,8 +18,8 @@ import static io.github.narutopig.neon.lib.util.Chars.*;
 public class Lexer {
     private final char[] text;
     private final int textLength;
-    private char currentChar;
     private final Position position = new Position();
+    private char currentChar;
 
     public Lexer(String text) {
         this.text = text.toCharArray();
@@ -44,7 +45,7 @@ public class Lexer {
 
                 advance();
             } else if (currentChar == '_' || isAlpha(currentChar)) {
-                StringValue value = addIdentifier();
+                IdentifierValue value = addIdentifier();
 
                 String identifier = value.getValue();
 
@@ -58,6 +59,13 @@ public class Lexer {
             } else if (currentChar == ' ' || currentChar == '\n' || currentChar == '\t') {
                 advance();
             } else if (sct != null) {
+                if (sct == TokenType.DIVIDE && peek() == '/') {
+                    while (currentChar != '\n') {
+                        advance();
+                    }
+
+                    advance();
+                }
                 if (peek() == '=') {
                     switch (sct) {
                         case ASSIGN:
@@ -152,7 +160,7 @@ public class Lexer {
         return new StringValue(res);
     }
 
-    private StringValue addIdentifier() {
+    private IdentifierValue addIdentifier() {
         String res = "";
 
         res += currentChar;
@@ -165,6 +173,6 @@ public class Lexer {
             advance();
         }
 
-        return new StringValue(res);
+        return new IdentifierValue(res);
     }
 }
