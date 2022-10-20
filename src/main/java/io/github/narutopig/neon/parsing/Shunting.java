@@ -1,6 +1,5 @@
 package io.github.narutopig.neon.parsing;
 
-import io.github.narutopig.neon.parsing.ParsingError;
 import io.github.narutopig.neon.parsing.token.Token;
 import io.github.narutopig.neon.parsing.token.TokenType;
 

@@ -10,33 +10,25 @@ import java.util.List;
 
 public abstract class NeonFunction {
     private final String name;
-    private final boolean isStatic;
     private final List<Statement> statements;
     private final Type returnType;
-    private final Memory memory;
 
-    public NeonFunction(String name, boolean isStatic, List<Statement> statements, Type returnType, Memory memory) {
+    public NeonFunction(String name, List<Statement> statements, Type returnType) {
         this.name = name;
-        this.isStatic = isStatic;
         this.statements = statements;
         this.returnType = returnType;
-        this.memory = memory;
     }
 
-    public NeonFunction(String name, boolean isStatic, List<Statement> statements, Type returnType) {
-        this(name, isStatic, statements, returnType, new Memory());
+    public NeonFunction(String name, Type returnType) {
+        this.name = name;
+        this.statements = new ArrayList<>();
+        this.returnType = returnType;
     }
 
     // TODO: change return type to a Value
-    public Type execute(List<Value<?>> arguments) {
-        if (isStatic) {
-            for (Statement statement : statements) {
-                statement.execute(new Memory());
-            }
-        } else {
-            for (Statement statement : statements) {
-                statement.execute(memory);
-            }
+    public Type execute(List<Value<?>> arguments, Memory memory) {
+        for (Statement statement : statements) {
+            statement.execute(memory);
         }
 
         return returnType;

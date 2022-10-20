@@ -1,14 +1,14 @@
 package io.github.narutopig.neon.parsing.lexer;
 
+import io.github.narutopig.neon.exec.value.BooleanValue;
+import io.github.narutopig.neon.exec.value.IdentifierValue;
+import io.github.narutopig.neon.exec.value.NumberValue;
+import io.github.narutopig.neon.exec.value.StringValue;
 import io.github.narutopig.neon.parsing.ParsingError;
 import io.github.narutopig.neon.parsing.token.Token;
 import io.github.narutopig.neon.parsing.token.TokenType;
 import io.github.narutopig.neon.parsing.util.Chars;
 import io.github.narutopig.neon.parsing.util.Identifiers;
-import io.github.narutopig.neon.exec.value.BooleanValue;
-import io.github.narutopig.neon.exec.value.IdentifierValue;
-import io.github.narutopig.neon.exec.value.NumberValue;
-import io.github.narutopig.neon.exec.value.StringValue;
 
 import java.util.ArrayList;
 import java.util.List;

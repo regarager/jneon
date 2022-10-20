@@ -1,6 +1,5 @@
 package io.github.narutopig.neon.exec.runtime;
 
-import io.github.narutopig.neon.exec.runtime.Type;
 import io.github.narutopig.neon.exec.value.Value;
 
 public class Variable {
