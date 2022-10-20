@@ -3,14 +3,30 @@ package io.github.narutopig.neon.lib.util;
 import io.github.narutopig.neon.lib.token.TokenType;
 
 public class Chars {
+    /**
+     * Checks if the char is a digit
+     *
+     * @param c
+     */
     public static boolean isDigit(char c) {
         return c >= '0' && c <= '9';
     }
 
+    /**
+     * Checks if the char is a Latin letter
+     *
+     * @param c
+     */
     public static boolean isAlpha(char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
     }
 
+    /**
+     * Attempts to convert the character into a {@link TokenType} that is only one character in length
+     * These {@link TokenType} include ( ) [ ] + - etc.
+     *
+     * @param c
+     */
     public static TokenType singleCharToken(char c) {
         switch (c) {
             case '(':

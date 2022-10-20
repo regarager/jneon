@@ -26,6 +26,11 @@ public class Lexer {
         this.textLength = text.length();
     }
 
+    /**
+     * Reads the content passed to the {@link Lexer}
+     *
+     * @return The tokens generated from the input string
+     */
     public List<Token> tokenize() {
         List<Token> tokens = new ArrayList<>();
 
@@ -96,17 +101,6 @@ public class Lexer {
         return tokens;
     }
 
-    public void test() {
-        advance();
-
-        while (position.pos < textLength) {
-            System.out.print(currentChar);
-            advance();
-        }
-
-        System.out.println();
-    }
-
     private void advance() {
         position.advance(currentChar);
 
@@ -121,6 +115,9 @@ public class Lexer {
         return text[position.pos + 1];
     }
 
+    /**
+     * @return The subsequent characters that can form a number
+     */
     private NumberValue addNum() {
         String num = "";
         int dotc = 0;
@@ -141,6 +138,9 @@ public class Lexer {
         return new NumberValue(Double.parseDouble(num));
     }
 
+    /**
+     * @return The characters until a " is encountered
+     */
     private StringValue addString() {
         String res = "";
 
@@ -160,6 +160,9 @@ public class Lexer {
         return new StringValue(res);
     }
 
+    /**
+     * @return The characters until a non-alphanumeric character is encountered
+     */
     private IdentifierValue addIdentifier() {
         String res = "";
 

@@ -1,7 +1,7 @@
 package io.github.narutopig.neon;
 
-import io.github.narutopig.neon.lib.parsing.Shunting;
 import io.github.narutopig.neon.lib.lexer.Lexer;
+import io.github.narutopig.neon.lib.parsing.Shunting;
 import io.github.narutopig.neon.lib.token.Token;
 import io.github.narutopig.neon.lib.token.TokenType;
 import io.github.narutopig.neon.lib.value.IdentifierValue;

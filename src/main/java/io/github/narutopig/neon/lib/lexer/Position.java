@@ -1,5 +1,8 @@
 package io.github.narutopig.neon.lib.lexer;
 
+/**
+ * Represents the current position of the lexer in the file
+ */
 public class Position {
     int line;
     int col;

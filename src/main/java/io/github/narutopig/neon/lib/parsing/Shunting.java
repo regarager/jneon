@@ -9,6 +9,12 @@ import java.util.List;
 import java.util.Stack;
 
 public class Shunting {
+    /**
+     * Implements the <a href="https://en.wikipedia.org/wiki/Shunting_yard_algorithm">shunting-yard algorithm</a>
+     *
+     * @param tokens The list of the tokens in the expression
+     * @return A stack of tokens in Reverse Polish Notation
+     */
     public static Stack<Token> shunt(List<Token> tokens) {
         Stack<Token> output = new Stack<>();
         Stack<Token> operator = new Stack<>();
@@ -26,21 +32,12 @@ public class Shunting {
                     output.push(token);
                 }
             } else if (Token.isArithOP(token.getType())) {
-                if (operator.isEmpty()) continue;
-                Token o2 = operator.peek();
-
-                while (o2.getType() != TokenType.LEFTPAREN && Token.precedence(o2.getType()) > Token.precedence(token.getType())) {
-                    Token top;
-
+                while (!operator.isEmpty() && operator.peek().getType() != TokenType.LEFTPAREN && Token.precedence(operator.peek().getType()) >= Token.precedence(token.getType())) {
                     try {
-                        top = operator.pop();
+                        output.push(operator.pop());
                     } catch (EmptyStackException e) {
                         throw new ParsingError("mismatched parentheses");
                     }
-
-                    output.push(top);
-
-                    o2 = operator.peek();
                 }
 
                 operator.push(token);
@@ -48,9 +45,6 @@ public class Shunting {
                 operator.push(token);
             } else if (token.getType() == TokenType.RIGHTPAREN) {
                 while (!operator.isEmpty() && operator.peek().getType() != TokenType.LEFTPAREN) {
-                    if (operator.isEmpty()) {
-                        throw new ParsingError("mismatched parentheses");
-                    }
                     output.push(operator.pop());
                 }
 

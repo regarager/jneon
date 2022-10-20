@@ -11,13 +11,16 @@ public class Token {
             TokenType.MODULUS,
     };
     private final TokenType tokentype;
-    private final Value value;
+    private final Value<?> value;
 
-    public Token(TokenType tokenType, Value value) {
+    public Token(TokenType tokenType, Value<?> value) {
         this.tokentype = tokenType;
         this.value = value;
     }
 
+    /**
+     * Checks if the given {@link TokenType} is an arithmetic operator (+, -, *, / %)
+     */
     public static boolean isArithOP(TokenType tt) {
         for (TokenType t : ARITHOPS) {
             if (tt == t) return true;
@@ -26,6 +29,11 @@ public class Token {
         return false;
     }
 
+    /**
+     * Returns the precedence of the given {@link TokenType}
+     *
+     * @return 0 if the {@link TokenType} is + or -, 1 if it is *, /, or %, and -1 otherwise
+     */
     public static int precedence(TokenType tt) {
         if (tt == TokenType.ADD || tt == TokenType.SUBTRACT) return 0;
         else if (tt == TokenType.MULTIPLY || tt == TokenType.DIVIDE || tt == TokenType.MODULUS) return 1;
@@ -40,7 +48,7 @@ public class Token {
         return tokentype;
     }
 
-    public Value getValue() {
+    public Value<?> getValue() {
         return value;
     }
 }
