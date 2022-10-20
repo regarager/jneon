@@ -34,6 +34,7 @@ public class Main {
                 new Token(TokenType.IDENTFIER, new IdentifierValue("sin")),
                 new Token(TokenType.LEFTPAREN, null),
                 new Token(TokenType.IDENTFIER, new IdentifierValue("max")),
+                new Token(TokenType.LEFTPAREN, null),
                 new Token(TokenType.NUMBERVALUE, new NumberValue(2)),
                 new Token(TokenType.NUMBERVALUE, new NumberValue(3)),
                 new Token(TokenType.RIGHTPAREN, null),
