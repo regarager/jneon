@@ -119,7 +119,7 @@ public class Parsing {
 
                     if (sub.get(2).getType() == TokenType.LEFTCURLY) {
                         // no arg func
-                        List<Token> subtokens = sub.subList(start + 1, end);
+                        List<Token> subtokens = sub.subList(start + 1, end - 1);
 
                         FunctionDeclaration func = new FunctionDeclaration(
                                 List.of(type.getValue(), name.getValue())

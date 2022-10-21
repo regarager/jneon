@@ -37,11 +37,4 @@ public class Program extends Statement {
     public void addChild(Statement s) {
         children.add(s);
     }
-
-    public void print() {
-        System.out.println(children.size());
-        for (Statement child : children) {
-            System.out.println(child);
-        }
-    }
 }

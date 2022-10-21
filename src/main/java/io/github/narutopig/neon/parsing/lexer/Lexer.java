@@ -1,9 +1,6 @@
 package io.github.narutopig.neon.parsing.lexer;
 
-import io.github.narutopig.neon.exec.value.BooleanValue;
-import io.github.narutopig.neon.exec.value.IdentifierValue;
-import io.github.narutopig.neon.exec.value.NumberValue;
-import io.github.narutopig.neon.exec.value.StringValue;
+import io.github.narutopig.neon.exec.value.*;
 import io.github.narutopig.neon.parsing.ParsingError;
 import io.github.narutopig.neon.parsing.token.Token;
 import io.github.narutopig.neon.parsing.token.TokenType;
@@ -55,12 +52,9 @@ public class Lexer {
                 String identifier = value.getValue();
 
                 TokenType tt = Identifiers.identifierMagic(identifier);
+                Value<?> val = Identifiers.valueMagic(identifier);
 
-                if (tt == TokenType.BOOLEANVALUE) {
-                    tokens.add(new Token(tt, new BooleanValue(identifier.equals("true"))));
-                } else {
-                    tokens.add(new Token(tt, value));
-                }
+                tokens.add(new Token(tt, val));
             } else if (currentChar == ' ' || currentChar == '\n' || currentChar == '\t') {
                 advance();
             } else if (sct != null) {
