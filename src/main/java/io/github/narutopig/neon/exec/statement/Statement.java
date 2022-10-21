@@ -26,4 +26,8 @@ public abstract class Statement {
     public void addChild(Statement s) {
         children.add(s);
     }
+
+    public String toString() {
+        return String.format("Statement{args: %s}", args);
+    }
 }

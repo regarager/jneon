@@ -1,5 +1,7 @@
 package io.github.narutopig.neon;
 
+import io.github.narutopig.neon.exec.statement.statements.Program;
+import io.github.narutopig.neon.parsing.Parsing;
 import io.github.narutopig.neon.parsing.lexer.Lexer;
 import io.github.narutopig.neon.parsing.token.Token;
 
@@ -26,5 +28,12 @@ public class Main {
         Lexer lexer = new Lexer(content);
 
         List<Token> tokens = lexer.tokenize();
+        Parsing parsing = new Parsing(tokens);
+
+        Program prog = parsing.parse();
+
+        prog.print();
+
+        System.out.println(prog.getFunctions().get("main"));
     }
 }
