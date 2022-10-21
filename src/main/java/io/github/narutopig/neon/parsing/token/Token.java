@@ -10,6 +10,13 @@ public class Token {
             TokenType.DIVIDE,
             TokenType.MODULUS,
     };
+
+    public static final TokenType[] TYPES = new TokenType[]{
+            TokenType.NUMBERTYPE,
+            TokenType.STRINGTYPE,
+            TokenType.BOOLEANTYPE,
+    };
+
     private final TokenType tokentype;
     private final Value<?> value;
 
@@ -23,6 +30,17 @@ public class Token {
      */
     public static boolean isArithOP(TokenType tt) {
         for (TokenType t : ARITHOPS) {
+            if (tt == t) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if the given {@link TokenType} is a typing identifier (number, string, boolean)
+     */
+   public static boolean isTypeIdentifier(TokenType tt) {
+        for (TokenType t : TYPES) {
             if (tt == t) return true;
         }
 

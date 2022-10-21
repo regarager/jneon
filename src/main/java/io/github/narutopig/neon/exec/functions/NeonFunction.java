@@ -8,7 +8,7 @@ import io.github.narutopig.neon.exec.value.Value;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class NeonFunction {
+public class NeonFunction {
     private final String name;
     private final List<Statement> statements;
     private final Type returnType;
