@@ -2,6 +2,7 @@ package io.github.narutopig.neon.parsing;
 
 import io.github.narutopig.neon.exec.functions.Functions;
 import io.github.narutopig.neon.exec.functions.NeonFunction;
+import io.github.narutopig.neon.exec.runtime.Memory;
 import io.github.narutopig.neon.exec.statement.Statement;
 import io.github.narutopig.neon.exec.statement.statements.Declaration;
 import io.github.narutopig.neon.exec.statement.statements.FunctionCall;
@@ -20,9 +21,11 @@ import java.util.stream.Collectors;
 public class Parsing {
     private final List<Token> tokens;
     private final Map<String, NeonFunction> functions = Functions.getFunctions();
+    private final Memory memory;
 
-    public Parsing(List<Token> tokens) {
+    public Parsing(List<Token> tokens, Memory memory) {
         this.tokens = tokens;
+        this.memory = memory;
     }
 
     public static List<List<Token>> children(List<Token> toks) {
@@ -101,17 +104,17 @@ public class Parsing {
 
                     if (stuffs.size() == 2) {
                         // just declaration
-                        parent.addChild(new Declaration(
-                                stuffs.stream().map(Token::getValue).collect(Collectors.toList())
-                        ));
+                        // ok so this thing parses the whole statement (i.e. int i = 5) so store the right part in a value and pass it along with left side
+                        parent.addChild(new Declaration(stuffs.subList(0, 2).stream().map(Token::getValue).collect(Collectors.toList())));
                     } else if (stuffs.size() == 3) {
                         // not supposed to happen, something like int x = or int x 5
                         throw new ParsingError("expected argument");
-                    } else if (stuffs.size() == 4) {
+                    } else if (stuffs.size() > 3) {
                         // hopefully legal
-                        parent.addChild(new Declaration(
-                                stuffs.stream().map(Token::getValue).collect(Collectors.toList())
-                        ));
+                        Value<?> res = Shunting.evaluate(Shunting.shunt(stuffs, memory));
+                        List<Value<?>> prefix = stuffs.subList(0, 2).stream().map(Token::getValue).collect(Collectors.toList());
+                        prefix.add(res);
+                        parent.addChild(new Declaration(prefix));
                     }
                 } else if (first.getType() == TokenType.IDENTFIER) {
                     if (stuffs.get(1).getType() == TokenType.LEFTPAREN) {
@@ -132,13 +135,12 @@ public class Parsing {
                             }
                         }
 
-                        List<? extends Value<?>> tings = stuffs.stream().map(Token::getValue).collect(Collectors.toList())
-                                .subList(start, end);
+                        Value<?> tingVal = Shunting.evaluate(Shunting.shunt(stuffs.subList(start, end), memory));
 
                         List<Value<?>> thing = new ArrayList<>();
                         thing.add(first.getValue());
                         if (start != end) {
-                            thing.addAll(tings);
+                            thing.add(tingVal);
                         }
                         parent.addChild(new FunctionCall(thing));
                     }
