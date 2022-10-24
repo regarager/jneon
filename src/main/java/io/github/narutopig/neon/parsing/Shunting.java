@@ -28,7 +28,7 @@ public class Shunting {
             Token token = list.get(i);
 
             TokenType tokenType = token.getType();
-            if (tokenType == TokenType.NUMBERVALUE) {
+            if (tokenType == TokenType.NUMBERVALUE || tokenType == TokenType.STRINGVALUE) {
                 // variables are converted to nums in shunt
                 stack.push(token.getValue());
             } else {

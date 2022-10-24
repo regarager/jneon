@@ -45,20 +45,5 @@ public class Main {
         NeonFunction mainFunc = prog.getFunctions().get("main");
 
         mainFunc.execute(new ArrayList<>(), memory);
-
-        List<Token> test = List.of(
-                new Token(TokenType.NUMBERVALUE, new NumberValue(3)),
-                new Token(TokenType.STRINGVALUE, new StringValue("helo")),
-                new Token(TokenType.MULTIPLY, null)
-        );
-
-
-        Memory mem = new Memory();
-
-        Stack<Token> stuff = Shunting.shunt(test, mem);
-
-        System.out.println(")(_ER*");
-        System.out.println(stuff);
-        System.out.println(Shunting.evaluate(stuff));
     }
 }
