@@ -46,9 +46,12 @@ public class Identifiers {
 
         if (tt != null) {
             switch (tt) {
-                case NUMBERTYPE: return new TypeValue(Type.NUMBER);
-                case STRINGTYPE: return new TypeValue(Type.STRING);
-                case BOOLEANTYPE: return new TypeValue(Type.BOOLEAN);
+                case NUMBERTYPE:
+                    return new TypeValue(Type.NUMBER);
+                case STRINGTYPE:
+                    return new TypeValue(Type.STRING);
+                case BOOLEANTYPE:
+                    return new TypeValue(Type.BOOLEAN);
             }
         }
 

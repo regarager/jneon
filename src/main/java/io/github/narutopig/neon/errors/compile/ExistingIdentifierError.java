@@ -1,4 +1,4 @@
-package io.github.narutopig.neon.exec;
+package io.github.narutopig.neon.errors.compile;
 
 public class ExistingIdentifierError extends Error {
     public ExistingIdentifierError(String message) {

@@ -1,7 +1,7 @@
 package io.github.narutopig.neon.exec.runtime;
 
-import io.github.narutopig.neon.exec.ExistingIdentifierError;
-import io.github.narutopig.neon.exec.IllegalTypeError;
+import io.github.narutopig.neon.errors.compile.ExistingIdentifierError;
+import io.github.narutopig.neon.errors.compile.IllegalTypeError;
 import io.github.narutopig.neon.exec.value.*;
 
 import java.util.HashMap;
@@ -16,6 +16,10 @@ public class Memory {
 
     public Memory(Memory memory) {
         state = memory.state;
+    }
+
+    public Map<String, Variable> getState() {
+        return state;
     }
 
     public Variable getVariable(String key) {

@@ -1,26 +1,67 @@
 package io.github.narutopig.neon.parsing;
 
+import io.github.narutopig.neon.exec.functions.Functions;
 import io.github.narutopig.neon.exec.functions.NeonFunction;
 import io.github.narutopig.neon.exec.statement.Statement;
 import io.github.narutopig.neon.exec.statement.statements.Declaration;
+import io.github.narutopig.neon.exec.statement.statements.FunctionCall;
 import io.github.narutopig.neon.exec.statement.statements.FunctionDeclaration;
 import io.github.narutopig.neon.exec.statement.statements.Program;
 import io.github.narutopig.neon.exec.value.IdentifierValue;
+import io.github.narutopig.neon.exec.value.Value;
 import io.github.narutopig.neon.parsing.token.Token;
 import io.github.narutopig.neon.parsing.token.TokenType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Parsing {
     private final List<Token> tokens;
-    private final Map<String, NeonFunction> functions = new HashMap<>();
+    private final Map<String, NeonFunction> functions = Functions.getFunctions();
 
     public Parsing(List<Token> tokens) {
         this.tokens = tokens;
+    }
+
+    public static List<List<Token>> children(List<Token> toks) {
+        List<List<Token>> stuffs = new ArrayList<>();
+
+        List<Token> curr = new ArrayList<>();
+
+        int depth = 0; // for curly braces
+        int prevdepth = 0;
+        for (Token token : toks) {
+            curr.add(token);
+
+            TokenType tt = token.getType();
+            if (tt == TokenType.SEMI && depth == 0) {
+                stuffs.add(new ArrayList<>(curr));
+                curr.clear();
+            } else if (tt == TokenType.LEFTCURLY) {
+                prevdepth = depth;
+                depth++;
+            } else if (tt == TokenType.RIGHTCURLY) {
+                prevdepth = depth;
+                depth--;
+            }
+
+            if (!curr.isEmpty() && prevdepth == 1) {
+                stuffs.add(new ArrayList<>(curr));
+                curr.clear();
+            }
+        }
+
+        if (depth != 0) {
+            throw new ParsingError("mismatched curly braces"); // shouldnt be thrown be whatever
+        }
+
+        if (!curr.isEmpty()) {
+            stuffs.add(curr);
+        }
+
+        return stuffs;
     }
 
     public Program parse() {
@@ -72,6 +113,35 @@ public class Parsing {
                                 stuffs.stream().map(Token::getValue).collect(Collectors.toList())
                         ));
                     }
+                } else if (first.getType() == TokenType.IDENTFIER) {
+                    if (stuffs.get(1).getType() == TokenType.LEFTPAREN) {
+                        int lc = 1;
+                        int rc = 0;
+
+                        int start = 2;
+                        int end = -1;
+                        for (int i = 2; i < stuffs.size(); i++) {
+                            TokenType thing = stuffs.get(i).getType();
+
+                            if (thing == TokenType.LEFTPAREN) lc++;
+                            else if (thing == TokenType.RIGHTPAREN) rc++;
+
+                            if (lc == rc) {
+                                end = i;
+                                break;
+                            }
+                        }
+
+                        List<? extends Value<?>> tings = stuffs.stream().map(Token::getValue).collect(Collectors.toList())
+                                .subList(start, end);
+
+                        List<Value<?>> thing = new ArrayList<>();
+                        thing.add(first.getValue());
+                        if (start != end) {
+                            thing.addAll(tings);
+                        }
+                        parent.addChild(new FunctionCall(thing));
+                    }
                 }
             } else {
                 // function def requires at least 4 tokens
@@ -119,7 +189,7 @@ public class Parsing {
 
                     if (sub.get(2).getType() == TokenType.LEFTCURLY) {
                         // no arg func
-                        List<Token> subtokens = sub.subList(start + 1, end - 1);
+                        List<Token> subtokens = sub.subList(start + 1, end);
 
                         FunctionDeclaration func = new FunctionDeclaration(
                                 List.of(type.getValue(), name.getValue())
@@ -127,7 +197,9 @@ public class Parsing {
 
                         parse(subtokens, func);
 
-                        functions.put(((IdentifierValue) name.getValue()).getValue(), func.getFunction());
+                        NeonFunction nf = func.getFunction();
+                        functions.put(((IdentifierValue) name.getValue()).getValue(), nf);
+
                         // tokens within the function
                     }
                 } else {
@@ -135,45 +207,6 @@ public class Parsing {
                 }
             }
         }
-    }
-
-    public static List<List<Token>> children(List<Token> toks) {
-        List<List<Token>> stuffs = new ArrayList<>();
-
-        List<Token> curr = new ArrayList<>();
-
-        int depth = 0; // for curly braces
-        int prevdepth = 0;
-        for (Token token : toks) {
-            curr.add(token);
-
-            TokenType tt = token.getType();
-            if (tt == TokenType.SEMI && depth == 0) {
-                stuffs.add(new ArrayList<>(curr));
-                curr.clear();
-            } else if (tt == TokenType.LEFTCURLY) {
-                prevdepth = depth;
-                depth++;
-            } else if (tt == TokenType.RIGHTCURLY) {
-                prevdepth = depth;
-                depth--;
-            }
-
-            if (!curr.isEmpty() && prevdepth == 1) {
-                stuffs.add(new ArrayList<>(curr));
-                curr.clear();
-            }
-        }
-
-        if (depth != 0) {
-            throw new ParsingError("mismatched curly braces"); // shouldnt be thrown be whatever
-        }
-
-        if (!curr.isEmpty()) {
-            stuffs.add(curr);
-        }
-
-        return stuffs;
     }
 
     /**

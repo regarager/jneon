@@ -37,4 +37,8 @@ public class NeonFunction {
     public String getName() {
         return name;
     }
+
+    public List<Statement> getStatements() {
+        return statements;
+    }
 }

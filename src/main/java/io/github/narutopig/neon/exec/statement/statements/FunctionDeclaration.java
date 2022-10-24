@@ -7,11 +7,9 @@ import io.github.narutopig.neon.exec.value.IdentifierValue;
 import io.github.narutopig.neon.exec.value.TypeValue;
 import io.github.narutopig.neon.exec.value.Value;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionDeclaration extends Statement {
-    private final List<Statement> children = new ArrayList<>();
     private final TypeValue type;
     private final IdentifierValue identifier;
 
@@ -34,6 +32,6 @@ public class FunctionDeclaration extends Statement {
     }
 
     public NeonFunction getFunction() {
-        return new NeonFunction(identifier.getValue(), children, type.getValue());
+        return new NeonFunction(identifier.getValue(), getChildren(), type.getValue());
     }
 }

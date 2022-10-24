@@ -1,6 +1,6 @@
 package io.github.narutopig.neon.exec.functions.stdlib;
 
-import io.github.narutopig.neon.exec.UnknownIdentifierError;
+import io.github.narutopig.neon.errors.runtime.UnknownIdentifierError;
 import io.github.narutopig.neon.exec.functions.NeonFunction;
 import io.github.narutopig.neon.exec.runtime.Memory;
 import io.github.narutopig.neon.exec.runtime.Type;
@@ -35,7 +35,9 @@ public class Print extends NeonFunction {
                 arg = variable.getValue();
             }
 
-            System.out.println(arg.getValue());
+            if (arg == null) {
+                System.out.println("null"); // fix later
+            } else System.out.println(arg.getValue());
         }
         return returnType;
     }

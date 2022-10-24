@@ -1,6 +1,6 @@
 package io.github.narutopig.neon.exec.statement.statements;
 
-import io.github.narutopig.neon.exec.UnknownIdentifierError;
+import io.github.narutopig.neon.errors.runtime.UnknownIdentifierError;
 import io.github.narutopig.neon.exec.runtime.Memory;
 import io.github.narutopig.neon.exec.statement.Statement;
 import io.github.narutopig.neon.exec.value.IdentifierValue;

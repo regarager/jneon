@@ -39,7 +39,7 @@ public class Token {
     /**
      * Checks if the given {@link TokenType} is a typing identifier (number, string, boolean)
      */
-   public static boolean isTypeIdentifier(TokenType tt) {
+    public static boolean isTypeIdentifier(TokenType tt) {
         for (TokenType t : TYPES) {
             if (tt == t) return true;
         }

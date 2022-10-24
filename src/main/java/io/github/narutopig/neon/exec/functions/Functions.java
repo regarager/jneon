@@ -9,11 +9,15 @@ import java.util.Map;
 public class Functions {
     private static final Map<String, NeonFunction> functions = new HashMap<>();
 
+    static {
+        functions.put("print", new Print("print", Type.VOID));
+    }
+
     public static NeonFunction getFunction(String key) {
         return functions.get(key);
     }
 
-    void init() {
-        functions.put("print", new Print("print", Type.VOID));
+    public static Map<String, NeonFunction> getFunctions() {
+        return functions;
     }
 }

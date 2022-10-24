@@ -1,6 +1,6 @@
 package io.github.narutopig.neon.exec.statement.statements;
 
-import io.github.narutopig.neon.exec.UnknownIdentifierError;
+import io.github.narutopig.neon.errors.runtime.UnknownIdentifierError;
 import io.github.narutopig.neon.exec.functions.Functions;
 import io.github.narutopig.neon.exec.functions.NeonFunction;
 import io.github.narutopig.neon.exec.runtime.Memory;
@@ -13,6 +13,9 @@ import java.util.List;
 public class FunctionCall extends Statement {
     private final List<Value<?>> args;
 
+    /**
+     * @param args Should only contain the arguments
+     */
     public FunctionCall(List<Value<?>> args) {
         super(args);
 
