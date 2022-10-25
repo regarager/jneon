@@ -25,7 +25,7 @@ public class Operations {
                 );
             } else if (val2 instanceof StringValue) {
                 return new StringValue(
-                        ((StringValue) val1).getValue() + ((StringValue) val2).getValue()
+                        ((StringValue) val2).getValue() + ((StringValue) val1).getValue()
                 );
             } else {
                 throw new MathError("operation add not supported");
