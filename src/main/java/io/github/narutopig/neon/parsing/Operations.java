@@ -13,7 +13,7 @@ public class Operations {
                 return new NumberValue(((NumberValue) val1).getValue() + ((NumberValue) val2).getValue());
             } else if (val2 instanceof StringValue) {
                 return new StringValue(
-                        String.format("%f%s", ((NumberValue) val1).getValue(), ((StringValue) val2).getValue())
+                        String.format("%s%f", ((StringValue) val2).getValue(), ((NumberValue) val1).getValue())
                 );
             } else {
                 throw new MathError("operation add not supported");
