@@ -105,16 +105,16 @@ public class Parsing {
                     if (stuffs.size() == 2) {
                         // just declaration
                         // ok so this thing parses the whole statement (i.e. int i = 5) so store the right part in a value and pass it along with left side
-                        parent.addChild(new Declaration(stuffs.subList(0, 2).stream().map(Token::getValue).collect(Collectors.toList())));
+                        new Declaration(stuffs.subList(0, 2).stream().map(Token::getValue).collect(Collectors.toList())).execute(memory);
                     } else if (stuffs.size() == 3) {
                         // not supposed to happen, something like int x = or int x 5
                         throw new ParsingError("expected argument");
                     } else if (stuffs.size() > 3) {
                         // hopefully legal
-                        Value<?> res = Shunting.evaluate(Shunting.shunt(stuffs, memory));
+                        Value<?> res = Shunting.evaluate(Shunting.shunt(stuffs.subList(3, stuffs.size()), memory));
                         List<Value<?>> prefix = stuffs.subList(0, 2).stream().map(Token::getValue).collect(Collectors.toList());
                         prefix.add(res);
-                        parent.addChild(new Declaration(prefix));
+                        new Declaration(prefix).execute(memory);
                     }
                 } else if (first.getType() == TokenType.IDENTFIER) {
                     if (stuffs.get(1).getType() == TokenType.LEFTPAREN) {
